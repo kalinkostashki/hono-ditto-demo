@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mmock
+  labels:
+    app: mmock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mmock
+  template:
+    metadata:
+      labels:
+        app: mmock
+    spec:
+      containers:
+        - name: mmock
+          image: jordimartin/mmock:latest
+          ports:
+            - containerPort: 8083
+          volumeMounts:
+            - mountPath: /config/mmock.json
+              name: mocks-volume
+              subPath: mmock.json
+      volumes:
+        - name: mocks-volume
+          configMap:
+            name: mmock-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mmock-nodeport
+spec:
+  selector:
+    app: mmock
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+      nodePort: 30007
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mmock
+spec:
+  selector:
+    app: mmock
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mmock-config
+  labels:
+    app: mmock
+data:
+  mmock.json: |
+      {
+        "request": {
+          "method": "POST",
+          "path": "/dummy"
+        },
+        "response": {
+          "statusCode": 204
+        }
+      }

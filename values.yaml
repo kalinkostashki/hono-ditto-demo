@@ -1,0 +1,43 @@
+ditto:
+  swaggerui:
+    ## enabled controls whether swagger ui related resources should be created
+    enabled: true
+    ## replicaCount for swagger ui service
+    replicaCount: 1
+    ## updateStrategy for swagger ui service
+    ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+    ## additionalLabels on swagger ui pods
+    additionalLabels: {}
+    ## additionalAnnotations on swagger ui pods
+    additionalAnnotations: {}
+    image:
+      ## repository for the swagger ui docker image
+      repository: docker.io/swaggerapi/swagger-ui
+      ## tag for the swagger ui docker image
+      tag: v4.15.5
+      ## pullPolicy for the swagger ui docker image
+      pullPolicy: IfNotPresent
+    ## extraEnv to add arbitrary environment variable to swagger ui container
+    extraEnv: []
+    ## resources for the swagger ui container
+    resources:
+      requests:
+        memory: 16Mi
+    networkPolicy:
+      ## enabled controls whether swagger ui related NetworkPolicy should be created
+      enabled: true
+    podDisruptionBudget:
+      ## enabled controls whether swagger ui related PodDisruptionBudget should be created
+      enabled: true
+      ## minAvailable number of replicas during voluntary disruptions
+      minAvailable: 1
+    service:
+      ## port of the swaggerui service
+      port: 8080
+      ## annotations to add arbitrary annotations to swaggerui service
+      annotations: {}
