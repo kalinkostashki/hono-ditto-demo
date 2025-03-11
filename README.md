@@ -61,6 +61,7 @@ For the helm chart install we will be removing the limits for the ditto swagger-
 I've created a local values.yaml to fix the issue as the cloud2edge helm chart isn't very well-supported nowadays.
 ```shell
   RELEASE=c2e
+  helm repo add eclipse-iot https://eclipse.org/packages/charts
   helm install -n $NS -f values.yaml --wait --timeout 20m $RELEASE eclipse-iot/cloud2edge
 ```
 
