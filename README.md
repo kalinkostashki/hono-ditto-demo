@@ -88,6 +88,7 @@ A small test you can do is by executing the following command:
   echo $DITTO_API_BASE_URL
 ```
 Go to the URL displayed in your browser.You should see the Ditto UI opening:
+
 ![Ditot UI](/Assets/ditto-ui.png)
 
 ## Ditto UI Overview and Config
